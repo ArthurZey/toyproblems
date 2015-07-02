@@ -36,34 +36,37 @@ if len(args.input) > 0:
   # let's also initialize the solutions list with the trivial solution
   longest = [args.input[0]]
 
-  # Find the (first instance of the) second unique character:
-  for charindex, char in enumerate(args.input):
-    if char != char1:
-      index2 = charindex
-      char2  = char
-      break
+  # don't bother going any further if it's just a single character.
+  if len(args.input) > 1:
 
-  index = index2
+    # Find the (first instance of the) second unique character:
+    for charindex, char in enumerate(args.input):
+      if char != char1:
+        index2 = charindex
+        char2  = char
+        break
 
-  while index < len(args.input):
-    if args.input[index] == char1 or args.input[index] == char2:
-      if len(args.input[index1:index+1]) > len(longest[0]):
-        longest = [args.input[index1:index+1]]
-      elif len(args.input[index1:index+1]) == len(longest[0]):
-        longest.append(args.input[index1:index+1])
-    else:
-      # special case handling
-      if index == len(args.input) - 1 and (len(args.input[index2:index+1]) == len(longest[0])):
-        longest.append(args.input[index2:index+1])
+    index = index2
 
-      index1 = index2
-      char1 = args.input[index1]
-      char2 = args.input[index]
-      
-    if args.input[index] != args.input[index-1]:
-      index2 = index
+    while index < len(args.input):
+      if args.input[index] == char1 or args.input[index] == char2:
+        if len(args.input[index1:index+1]) > len(longest[0]):
+          longest = [args.input[index1:index+1]]
+        elif len(args.input[index1:index+1]) == len(longest[0]):
+          longest.append(args.input[index1:index+1])
+      else:
+        # special case handling
+        if index == len(args.input) - 1 and (len(args.input[index2:index+1]) == len(longest[0])):
+          longest.append(args.input[index2:index+1])
 
-    index += 1
+        index1 = index2
+        char1 = args.input[index1]
+        char2 = args.input[index]
+        
+      if args.input[index] != args.input[index-1]:
+        index2 = index
+
+      index += 1
 
   print(longest)
 else:
