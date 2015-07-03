@@ -19,6 +19,7 @@ def find_factors(number):
     elif number%index == 0:
       factors = factors.union(find_factors(index))
       factors = factors.union(find_factors(int(number/index)))
+      break
   if len(factors) == 0:
     factors.add(number)
   return factors
