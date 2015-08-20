@@ -47,7 +47,17 @@ class Budget:
   def __init__(self, args):
     self.parsed_args = self.parse_args(args)
     self.incomes     = self.parse_incomes(self.parsed_args.incomes)
-    self.goals       = self.parse_goals(self.parsed_args.goals, len(self.incomes))
+    self.goals       = self.parse_goals(self.parsed_args.goals)
+
+    # If we have more years of goals than incomes, we're going to gracefully terminate the program. We can't really know whether to expect 0 income in unspecified years, a continuation of the income in the last year specified, or something else (like an extrapolation of the income trajectory based on fitting to some kind of curve!?).
+    more_goals_than_incomes = len(self.goals) - len(self.incomes)
+    if more_goals_than_incomes > 0:
+      print("Goals may not be specified for years beyond for which there are specified incomes. Consider including " + str(more_goals_than_incomes) + " more year" + ("s" if more_goals_than_incomes != 1 else "") + " of income data.")
+      sys.exit(0)
+
+    self.goal_adjusted_incomes = self.adjust_incomes_by_goals(self.incomes, self.goals)
+
+    self.optimal_discretionary_spending = self.distribute_incomes(self.goal_adjusted_incomes)
 
 
   def parse_args(self, args):
@@ -63,20 +73,66 @@ class Budget:
 
     return [float(x.strip()) for x in "".join([c for c in incomes_string if c in "0123456789,"]).split(",")]
 
-  def parse_goals(self, goals_string, length):
+  def parse_goals(self, goals_string):
     '''Parse (and sanitize) a string of year:dollar goals into a list of year-by-year goals, with multiple goals for a given year combined.
+    '''
 
-      Presupposes that incomes have already been parsed into self.incomes.'''
+    # Initialize an empty list, which we'll populate with our goals and finally return.
+    result = list()
+    
+    # Sanitize the input string (allowing only [0-9], commas, and colons), then split into a list by the comma.
+    for year_to_goal_string in [x for x in "".join([c for c in goals_string if c in "0123456789,:"]).split(",")]:
+      
+      # The year comes before the colon.
+      year = int(year_to_goal_string.split(":")[0])
 
-    # Create an empty list for each year: If this is being called within an actual class instantiation, use len(self.incomes). Otherwise, use the number of colons in the input string as an upper bound.
-    result = [0] * length
-    for year_to_goal_string in [x.strip() for x in "".join([c for c in goals_string if c in "0123456789,:"]).split(",")]:
-      result[int(year_to_goal_string.split(":")[0].strip())-1] += float(year_to_goal_string.split(":")[1].strip())
+      # The goal comes after the colon.
+      goal = float(year_to_goal_string.split(":")[1])
+      
+      # If the goal currently under consideration is for a year larger than any presently in the result list...
+      if year > len(result):
+        # Grow the result list by enough zeros to accomodate the year.
+        result.extend([0] * (year - len(result)))
+
+        # Set the goal for that year in the result list.
+        result[year-1] = goal
+      else:
+        # Add the goal to the existing entry for that year.
+        result[year-1] += goal
  
     return result
 
-  def distribute_income(self, incomes):
-    '''Take in list of incomes for consecutive years, and return a distribution of the optimal spending over those years, assuming no particular spending requirements/goals in any year. Optimal spending means minimizing the decreasing marginal utility of each additional dollar spent. I believe this can also be thought of as minimizing the standard deviation.
+  def adjust_incomes_by_goals(self, incomes, goals):
+    '''Take in the list of incomes and list of goals, and begin to adjust the income numbers by "allocating" that income to goals in the same year. Perform a check as we go on to determine whether all goals are still achievable.
+
+    General strategy:
+    0. Key observation that's relevant to this step's being as simple as it is: Given how the distribute_incomes() class method is implemented, it's safe to allow negative incomes as a result of this method in a given year, as discretionary spending will be pulled forward as necessary to result in net non-negative values at the end of the distribute_incomes() method call.
+    1. Start at the first year (and move forward).
+    2. For any given year, sum up the (goal-adjusted) incomes for all the prior years.
+      a. If that exceeds the goal for the current year under consideration, provide an error message and gracefully exit.
+      b. If that does not exceed the goal for the current year under consideration, subtract the goal from the income for the current year.
+    3. Move on to the following year.
+    '''
+
+    # Initialize the goal_adjusted_incomes with the current given incomes.
+    goal_adjusted_incomes = [float(x) for x in incomes]
+
+    # Start at the beginning and move forward.
+    for year_index in range(len(goals)):
+
+      # If the sum of the goal_adjusted_incomes for the years up to and including the current year are less than the goal under consideration...
+      if sum(goal_adjusted_incomes[:year_index+1]) < goals[year_index]:
+        # Print an error message and gracefully quit.
+        print("Unfortunately, your goals are not achievable. You may consider something less ambitious in at least year " + str(year_index + 1) + ".")
+        sys.exit(0)
+      else:
+        # Adjust the income for the current year by subtracting this year's goal from it.
+        goal_adjusted_incomes[year_index] -= goals[year_index]
+
+    return goal_adjusted_incomes
+
+  def distribute_incomes(self, incomes):
+    '''Take in list of incomes (goal-adjusted or not) for consecutive years, and return a distribution of the optimal spending over those years. Optimal spending means minimizing the decreasing marginal utility of each additional dollar spent. I believe this can also be thought of as minimizing the standard deviation.
 
     General strategy:
     0. Key observation that's relevant to the consideration of the mathematics and algorithm design: The optimal spending will be monotonically increasing, year-over-year.
@@ -122,9 +178,7 @@ class Budget:
 
 def main():
   the_budget = Budget(sys.argv[1:])
-  print(the_budget.compute_budget())
-  #parser = parse_args(sys.argv[1:])
-
+  print(the_budget.optimal_discretionary_spending)
 
 if __name__ == '__main__':
   main()
