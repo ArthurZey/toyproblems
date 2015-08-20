@@ -2,19 +2,19 @@
 
 '''
 Introduction
-============
+------------
 
 Imagine that you were building an application that helps people with their budgeting. Specifically, you want to help people calculate how much they can afford to spend each year, and still meet their longer term financial goals (e.g. buying a house).
 
 Inputs
-======
+------
 
 1. The user tells you the income they expect to earn each year for the next N years. Income can be as low as $0, and can vary year to year.
 
 2. The user tells you all the financial goals they have for the next N years. An example of a financial goal is: “I’d like to buy a house in 10 years costing $100,000.” Some years can have no financial goals.
 
 Objective
-=========
+---------
 
 Your application should tell the user how much money to spend in each year for the next N years. It should choose these amounts with the following considerations:
 
@@ -27,12 +27,12 @@ Your application should tell the user how much money to spend in each year for t
   b. The user experiences declining marginal utility with respect to spending in a particular year. In other words, the first $100 spent in a year gives them more happiness than the second $100, which gives them more happiness than the third $100, and so on. This means the user would prefer to spend their discretionary dollars as evenly as possible across years.
 
 Question
-========
+--------
 
 Come up with an algorithm that will achieve the objective above. Your solution can be in “psuedo­code”, real code, English precise enough to be like code, a spreadsheet, or whatever other way you feel best allows you to express the solution. Please explain your solution clearly ­“just execute the code, it works” is not a good answer.
 
 Notes
-=====
+-----
 
 * You don’t need to worry about the user’s expectations of income being wrong, them losing their job, etc.
 
@@ -106,8 +106,8 @@ class Budget:
     '''Parse arguments into variables readily available to the class for further processing; provides built-in niceties for calling the script from the command line.'''
 
     parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument("incomes", help="a quotation-enclosed, comma-separated list of expected net income (whole dollars) for each of the next N years;\nfor example: \"85000,110000,120000,131000,133000,155000,160000,295000,295000,350000\"\nNote that non-numeric characters will be stripped, so \"34k8\" will be interpreted as \"348\".\n\n", type=str)
-    parser.add_argument("goals", help="a quotation-enclosed, comma-separated list of year-to-goal associations (where years are 1-indexed and not beyond the years specified in the \"income\" parameter);\nfor example: \"1:500,4:8472,4:1701,10:100000\"\nNote that non-numeric characters will be stripped, so \"34k8\" will be interpreted as \"348\".\n\n", type=str)
+    parser.add_argument("incomes", help="a quotation-mark-enclosed, comma-separated list of expected net income for each of the next N years;\nfor example: \"85000,110000,120000,131000,133000,155000,160000,295000,295000,350000\"\nNote that non-numeric characters will be stripped, so \"34k8\" will be interpreted as \"348\".\n\n", type=str)
+    parser.add_argument("goals", help="a quotation-mark-enclosed, comma-separated list of year-to-goal associations (where years are 1-indexed and not beyond the years specified in the \"income\" parameter);\nfor example: \"1:500,4:8472,4:1701,10:100000\"\nNote that non-numeric characters will be stripped, so \"34k8\" will be interpreted as \"348\".\n\n", type=str)
     return parser.parse_args(args)
 
   def parse_incomes(self, incomes_string):
@@ -180,7 +180,7 @@ class Budget:
     0. Key observation that's relevant to the consideration of the mathematics and algorithm design: The optimal spending will be monotonically increasing, year-over-year.
     1. Start at the last year (and move backward).
     2. For any given year, calculate the average of all the years leading up to and including it.
-      a. If the the income in that year is below that average, reallocate income from the nearest previous year that's above the average. (Mathematically, it's equivalent to allocate everything from the immediately previous year, even though that might put it under the average or even negative!)
+      a. If the the income in that year is below that average, reallocate income from the nearest previous year that's above the average. (Mathematically, it's equivalent to allocate everything from the immediately previous year, even though that might put it under the average or even make it negative!)
       b. If the income is above the average, but less than the following year (the previously _considered_ year in our algorithm), do nothing.
       c. If the income is above the following year, take the average of those two years and distribute evenly among them. Continue considering the next following year, and if the new average is bigger than that next year, average across all three and distribute evenly. Continue until the average is no longer greater than the next year considered.
     3. Move on to the previous year.
