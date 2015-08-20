@@ -73,14 +73,6 @@ class Budget:
     for year_to_goal_string in [x.strip() for x in "".join([c for c in goals_string if c in "0123456789,:"]).split(",")]:
       result[int(year_to_goal_string.split(":")[0].strip())-1] += float(year_to_goal_string.split(":")[1].strip())
 
-    '''
-    for goal in goals_list:
-      year_goal = [float(amount.strip()) for amount in goal.split(":")]
-      if year_goal[0] in result:
-        result[year_goal[0]] += year_goal[1]
-      else:
-        result[year_goal[0]] = year_goal[1]
-    '''
     return result
 
   def distribute_income(self, incomes):
