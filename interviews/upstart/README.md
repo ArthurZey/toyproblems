@@ -50,7 +50,7 @@ In addition to the stated assumptions:
 
 1. The universe ends after the last year for which income data is provided: If goals are specified past that year, the program gracefully quits, since it is impossible to know whether the user made an error, expected zero income in unspecified years, expected a continuation of the last specified year's income, or expected some kind of extrapolation of income trajectory based on curve-fitting.
 2. Inputs are all positive floating-point numbers.
-3. All non-numeric, non-separaters are stripped from the inputs without returning any errors or warnings. (They are assumed to be typos.)
+3. All non-numeric, non-separators are stripped from the inputs without returning any errors or warnings. (They are assumed to be typos.)
 4. Precision is limited to 10 decimal places during calculation, then rounded to 2 for display purposes.
 
 In General
@@ -63,7 +63,7 @@ In General
 
 (1) Verification that the goals are achievable & (2) Generating the goal-adjusted income
 ----------------------------------------------------------------------------------------
-We can verify that the goals are achievable as we're genertating the goal-adjusted income:
+We can verify that the goals are achievable as we're generating the goal-adjusted income:
 
 1. Start at the first year (and move forward).
 2. For any given year, sum up the (goal-adjusted) incomes for all the prior years.
@@ -91,7 +91,7 @@ Development Approach
   At this stage, I was not worried about the method that would print out the result in a pretty way.
 3. Most importantly, I utilized test-driven development (TDD): For each method that I would implement in the `Budget` class (in `upstart_budget.py`), I would first write a `unittest` in `upstart_budget.test.py` for enough different expected input-output pairs that I was comfortable with my code's functionality. Strictly speaking, I could have written a greater diversity of tests for each method, been more concerned with hitting 100% code coverage, tested my `__init__` and `__str__` class methods, written more integration tests, and used slightly tighter code and more standard implementations of unit testing, but as before, given the need for speedier development, I deprioritized those aspects.
 4. When implementing the various methods, I prioritized code readability over strict computational/space efficiency, and I commented heavily throughout. In some cases, I wrote condensed code (lots of method nesting or chaining), simply because it wasn't terribly relevant to the main thrust of the algorithm and it made for fewer lines of code (which would have had its own implications for readability!).
-5. Finally, when I was satisfied that my code generated the correct substantive conclusion, I made sure that the results would be printed out in an easily apprehensible way by adding the `__str__` class method.
+5. Finally, when I was satisfied that my code generated the correct substantive solution, I made sure that the results would be printed out in an easily apprehensible way by adding the `__str__` class method.
 5. I wanted to make sure that the script could either be run from the command line with parameters, or called internally via some code. I used the Python3 `argparse` class to facilitate command-line argument parsing in a user-friendly way.
 
 
@@ -106,5 +106,5 @@ I have only tested this on Mac OS and am confident my instructions below work eq
   * You can modify the tests in the file and play around with them yourself. I did not document the code in the test file, but it's easy to extrapolate how to add more test cases.
 4. To execute the code, from the directory where you have the files, run `./upstart_budget.py [incomes] [goals]`
   * `[incomes]` is a quotation-mark-enclosed, comma-separated list of incomes for the set of consecutive years over which the program runs. For example: `"85000,110000,120000,131000,133000,155000,160000,295000,295000,350000"`
-  * `[goals]` is a quotation-mark-enclosed, comma-seaparated pairing of year-to-goal associations (using a colon), specifying a year and the financial goal for that year. There can be multiple goals for a given year, and not every year must have a goal. For example: `"1:500,4:8472,4:1701,10:100000"`
+  * `[goals]` is a quotation-mark-enclosed, comma-separated pairing of year-to-goal associations (using a colon), specifying a year and the financial goal for that year. There can be multiple goals for a given year, and not every year must have a goal. For example: `"1:500,4:8472,4:1701,10:100000"`
   * An example complete call is `./upstart_budget.py "85000,110000,120000,131000,133000,155000,160000,295000,295000,350000" "1:500,4:8472,4:1701,10:100000"`
