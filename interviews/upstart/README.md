@@ -47,6 +47,7 @@ Preliminary note: At the time of doing this problem, I have about 1-2 weeks' wor
 Assumptions
 -----------
 In addition to the stated assumptions:
+
 1. The universe ends after the last year for which income data is provided: If goals are specified past that year, the program gracefully quits, since it is impossible to know whether the user made an error, expected zero income in unspecified years, expected a continuation of the last specified year's income, or expected some kind of extrapolation of income trajectory based on curve-fitting.
 2. Inputs are all positive floating-point numbers.
 3. All non-numeric, non-separaters are stripped from the inputs without returning any errors or warnings. (They are assumed to be typos.)
@@ -63,6 +64,7 @@ In General
 (1) Verification that the goals are achievable & (2) Generating the goal-adjusted income
 ----------------------------------------------------------------------------------------
 We can verify that the goals are achievable as we're genertating the goal-adjusted income:
+
 1. Start at the first year (and move forward).
 2. For any given year, sum up the (goal-adjusted) incomes for all the prior years.
   a. If that exceeds the goal for the current year under consideration, provide an error message and gracefully exit.
