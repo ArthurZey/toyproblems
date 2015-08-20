@@ -45,7 +45,7 @@ class BudgetTestCases(unittest.TestCase):
       "1:0": [0],
     }
     for (input_string, output_list) in inputs_to_outputs.items():
-      self.assertEqual(Budget.parse_goals(None, input_string), output_list)
+      self.assertEqual(Budget.parse_goals(None, input_string, input_string.count(":")), output_list)
   
   def test_distribute_income(self):
     inputs_to_outputs = {

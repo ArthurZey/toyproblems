@@ -47,7 +47,7 @@ class Budget:
   def __init__(self, args):
     self.parsed_args = self.parse_args(args)
     self.incomes     = self.parse_incomes(self.parsed_args.incomes)
-    self.goals       = self.parse_goals(self.parsed_args.goals)
+    self.goals       = self.parse_goals(self.parsed_args.goals, len(self.incomes))
 
 
   def parse_args(self, args):
@@ -63,16 +63,16 @@ class Budget:
 
     return [float(x.strip()) for x in "".join([c for c in incomes_string if c in "0123456789,"]).split(",")]
 
-  def parse_goals(self, goals_string):
+  def parse_goals(self, goals_string, length):
     '''Parse (and sanitize) a string of year:dollar goals into a list of year-by-year goals, with multiple goals for a given year combined.
 
       Presupposes that incomes have already been parsed into self.incomes.'''
 
     # Create an empty list for each year: If this is being called within an actual class instantiation, use len(self.incomes). Otherwise, use the number of colons in the input string as an upper bound.
-    result = [0 for x in [c for c in goals_string if c == ":"]] if self is None else [0 for x in self.incomes]
+    result = [0] * length
     for year_to_goal_string in [x.strip() for x in "".join([c for c in goals_string if c in "0123456789,:"]).split(",")]:
       result[int(year_to_goal_string.split(":")[0].strip())-1] += float(year_to_goal_string.split(":")[1].strip())
-
+ 
     return result
 
   def distribute_income(self, incomes):
