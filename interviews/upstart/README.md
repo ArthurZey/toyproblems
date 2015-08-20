@@ -22,9 +22,9 @@ Your application should tell the user how much money to spend in each year for t
 
 2. If the user can meet all of his or her goals, they would like to be as happy as possible.
 
-  a. Their happiness is a function of their discretionary spending. The more they spend, the happier they are!
+  1. Their happiness is a function of their discretionary spending. The more they spend, the happier they are!
 
-  b. The user experiences declining marginal utility with respect to spending in a particular year. In other words, the first $100 spent in a year gives them more happiness than the second $100, which gives them more happiness than the third $100, and so on. This means the user would prefer to spend their discretionary dollars as evenly as possible across years.
+  2. The user experiences declining marginal utility with respect to spending in a particular year. In other words, the first $100 spent in a year gives them more happiness than the second $100, which gives them more happiness than the third $100, and so on. This means the user would prefer to spend their discretionary dollars as evenly as possible across years.
 
 Question
 --------
@@ -67,19 +67,17 @@ We can verify that the goals are achievable as we're genertating the goal-adjust
 
 1. Start at the first year (and move forward).
 2. For any given year, sum up the (goal-adjusted) incomes for all the prior years.
-
-  a. If that exceeds the goal for the current year under consideration, provide an error message and gracefully exit.
-  b. If that does not exceed the goal for the current year under consideration, subtract the goal from the income for the current year.
+  1. If that exceeds the goal for the current year under consideration, provide an error message and gracefully exit.
+  2. If that does not exceed the goal for the current year under consideration, subtract the goal from the income for the current year.
 3. Move on to the following year.
 
 (3) Reallocating money to achieve the optimal discretionary spending distribution
 ---------------------------------------------------------------------------------
 1. Start at the last year (and move backward).
 2. For any given year, calculate the average of all the years leading up to and including it.
-
-  a. If the the income in that year is below that average, reallocate income from the nearest previous year that's above the average. (Mathematically, it's equivalent to allocate everything from the immediately previous year, even though that might put it under the average or even make it negative!)
-  b. If the income is above the average, but less than the following year (the previously _considered_ year in our algorithm), do nothing.
-  c. If the income is above the following year, take the average of those two years and distribute evenly among them. Continue considering the next following year, and if the new average is bigger than that next year, average across all three and distribute evenly. Continue until the average is no longer greater than the next year considered.
+  1. If the the income in that year is below that average, reallocate income from the nearest previous year that's above the average. (Mathematically, it's equivalent to allocate everything from the immediately previous year, even though that might put it under the average or even make it negative!)
+  2. If the income is above the average, but less than the following year (the previously _considered_ year in our algorithm), do nothing.
+  3. If the income is above the following year, take the average of those two years and distribute evenly among them. Continue considering the next following year, and if the new average is bigger than that next year, average across all three and distribute evenly. Continue until the average is no longer greater than the next year considered.
 3. Move on to the previous year.
 
 
@@ -87,10 +85,9 @@ Development Approach
 ====================
 1. I decided to wrap this functionality in a `Budget` class. This allows for better modularity and possible inclusion in other code. I regard it as a pretty standard practice. There may have been more efficient ways to develop this class. I wasn't terribly worried about that for this context, since speed of development was a high priority.
 2. I stubbed out the various methods I'd have to use (including writing the docstring for each one):
-
-  a. those that parse inputs
-  b. one that adjust the incomes by the goals (and verifies that the goals are achievable)
-  c. one that distributes incomes/spending in the optimal way
+  1. those that parse inputs
+  2. one that adjust the incomes by the goals (and verifies that the goals are achievable)
+  3. one that distributes incomes/spending in the optimal way
   At this stage, I was not worried about the method that would print out the result in a pretty way.
 3. Most importantly, I utilized test-driven development (TDD): For each method that I would implement in the `Budget` class (in `upstart_budget.py`), I would first write a `unittest` in `upstart_budget.test.py` for enough different expected input-output pairs that I was comfortable with my code's functionality. Strictly speaking, I could have written a greater diversity of tests for each method, been more concerned with hitting 100% code coverage, tested my `__init__` and `__str__` class methods, written more integration tests, and used slightly tighter code and more standard implementations of unit testing, but as before, given the need for speedier development, I deprioritized those aspects.
 4. When implementing the various methods, I prioritized code readability over strict computational/space efficiency, and I commented heavily throughout. In some cases, I wrote condensed code (lots of method nesting or chaining), simply because it wasn't terribly relevant to the main thrust of the algorithm and it made for fewer lines of code (which would have had its own implications for readability!).
