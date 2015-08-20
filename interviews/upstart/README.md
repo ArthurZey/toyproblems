@@ -67,6 +67,7 @@ We can verify that the goals are achievable as we're genertating the goal-adjust
 
 1. Start at the first year (and move forward).
 2. For any given year, sum up the (goal-adjusted) incomes for all the prior years.
+
   a. If that exceeds the goal for the current year under consideration, provide an error message and gracefully exit.
   b. If that does not exceed the goal for the current year under consideration, subtract the goal from the income for the current year.
 3. Move on to the following year.
@@ -75,6 +76,7 @@ We can verify that the goals are achievable as we're genertating the goal-adjust
 ---------------------------------------------------------------------------------
 1. Start at the last year (and move backward).
 2. For any given year, calculate the average of all the years leading up to and including it.
+
   a. If the the income in that year is below that average, reallocate income from the nearest previous year that's above the average. (Mathematically, it's equivalent to allocate everything from the immediately previous year, even though that might put it under the average or even make it negative!)
   b. If the income is above the average, but less than the following year (the previously _considered_ year in our algorithm), do nothing.
   c. If the income is above the following year, take the average of those two years and distribute evenly among them. Continue considering the next following year, and if the new average is bigger than that next year, average across all three and distribute evenly. Continue until the average is no longer greater than the next year considered.
@@ -85,6 +87,7 @@ Development Approach
 ====================
 1. I decided to wrap this functionality in a `Budget` class. This allows for better modularity and possible inclusion in other code. I regard it as a pretty standard practice. There may have been more efficient ways to develop this class. I wasn't terribly worried about that for this context, since speed of development was a high priority.
 2. I stubbed out the various methods I'd have to use (including writing the docstring for each one):
+
   a. those that parse inputs
   b. one that adjust the incomes by the goals (and verifies that the goals are achievable)
   c. one that distributes incomes/spending in the optimal way
