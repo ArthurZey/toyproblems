@@ -113,7 +113,7 @@ class Budget:
   def parse_incomes(self, incomes_string):
     '''Parse (and sanitize) a string of year-by-year incomes into a list of floating-point values.'''
 
-    return [float(x.strip()) for x in "".join([c for c in incomes_string if c in "0123456789,"]).split(",")]
+    return [float(x.strip()) for x in "".join([c for c in incomes_string if c in "0123456789.,"]).split(",")]
 
   def parse_goals(self, goals_string):
     '''Parse (and sanitize) a string of year:dollar goals into a list of year-by-year goals, with multiple goals for a given year combined.
@@ -123,7 +123,7 @@ class Budget:
     goals = list()
     
     # Sanitize the input string (allowing only [0-9], commas, and colons), then split into a list by the comma.
-    for year_to_goal_string in [x for x in "".join([c for c in goals_string if c in "0123456789,:"]).split(",")]:
+    for year_to_goal_string in [x for x in "".join([c for c in goals_string if c in "0123456789.,:"]).split(",")]:
       
       # The year comes before the colon.
       year = int(year_to_goal_string.split(":")[0])
