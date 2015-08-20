@@ -59,13 +59,55 @@ class Budget:
 
     self.optimal_discretionary_spending = self.distribute_incomes(self.goal_adjusted_incomes)
 
+  def __str__(self):
+    '''Display our inputs and outputs in a decently formatted table.'''
+
+    # Initialize the output string.
+    output = ""
+
+    # Figure out the maximum length of our inputs, assuming we're rounding to two decimal points (so that we can later decide the column widths we need).
+    max_len_goals = len(str(max([round(float(x), 2) for x in self.goals])))
+    max_len_incomes = len(str(max([round(float(x), 2) for x in self.incomes])))
+
+    # Define the row formatting. This code could be tightened up a bit, but it's good enough for now.
+    header_format = (
+      "{:>6}"
+      "{:>" + str(max(max_len_goals + 2, 8)) + "}"
+      "{:>" + str(max(max_len_incomes + 2, 10)) + "}"
+      "{:>" + str(max(max_len_incomes + 2, 25)) + "}"
+    )
+    row_format = (
+      "{:>6}"
+      "{:>" + str(max(max_len_goals + 2, 8)) + ".2f}"
+      "{:>" + str(max(max_len_incomes + 2, 10)) + ".2f}"
+      "{:>" + str(max(max_len_incomes + 2, 25)) + ".2f}"
+    )
+
+    # Add the headers to the output string.
+    output += "\n" + header_format.format(
+      "Year",
+      "Goals",
+      "Incomes",
+      "Discretionary Spending"
+    )
+
+    # Add each row, properly formatted, to the output string.
+    for i in range(0, len(self.incomes)):
+      output += "\n" + row_format.format(
+        (i+1),
+        (round(float(self.goals[i]), 2) if i < len(self.goals) else round(float(0), 2)),
+        round(float(self.incomes[i]), 2),
+        round(float(self.optimal_discretionary_spending[i]), 2)
+      )
+    return output
+
 
   def parse_args(self, args):
     '''Parse arguments into variables readily available to the class for further processing; provides built-in niceties for calling the script from the command line.'''
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("incomes", help="a quotation-enclosed, comma-separated list of expected net income (whole dollars) for each of the next N years;\nfor example: \"85000,110000,120000,131000,133000,155000,160000,295000,295000,350000\"\nNote that non-numeric characters will be stripped, so \"34k8\" will be interpreted as \"348\".", type=str)
-    parser.add_argument("goals", help="a quotation-enclosed, comma-separated list of year-to-goal associations (where years are 1-indexed and not beyond the years specified in the \"income\" parameter);\nfor example: \"1:500,4:8472,4:1701,10:100000\"\nNote that non-numeric characters will be stripped, so \"34k8\" will be interpreted as \"348\".", type=str)
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument("incomes", help="a quotation-enclosed, comma-separated list of expected net income (whole dollars) for each of the next N years;\nfor example: \"85000,110000,120000,131000,133000,155000,160000,295000,295000,350000\"\nNote that non-numeric characters will be stripped, so \"34k8\" will be interpreted as \"348\".\n\n", type=str)
+    parser.add_argument("goals", help="a quotation-enclosed, comma-separated list of year-to-goal associations (where years are 1-indexed and not beyond the years specified in the \"income\" parameter);\nfor example: \"1:500,4:8472,4:1701,10:100000\"\nNote that non-numeric characters will be stripped, so \"34k8\" will be interpreted as \"348\".\n\n", type=str)
     return parser.parse_args(args)
 
   def parse_incomes(self, incomes_string):
@@ -78,7 +120,7 @@ class Budget:
     '''
 
     # Initialize an empty list, which we'll populate with our goals and finally return.
-    result = list()
+    goals = list()
     
     # Sanitize the input string (allowing only [0-9], commas, and colons), then split into a list by the comma.
     for year_to_goal_string in [x for x in "".join([c for c in goals_string if c in "0123456789,:"]).split(",")]:
@@ -89,18 +131,18 @@ class Budget:
       # The goal comes after the colon.
       goal = float(year_to_goal_string.split(":")[1])
       
-      # If the goal currently under consideration is for a year larger than any presently in the result list...
-      if year > len(result):
-        # Grow the result list by enough zeros to accomodate the year.
-        result.extend([0] * (year - len(result)))
+      # If the goal currently under consideration is for a year larger than any presently in the goals list...
+      if year > len(goals):
+        # Grow the goals list by enough zeros to accomodate the year.
+        goals.extend([0] * (year - len(goals)))
 
-        # Set the goal for that year in the result list.
-        result[year-1] = goal
+        # Set the goal for that year in the goals list.
+        goals[year-1] = goal
       else:
         # Add the goal to the existing entry for that year.
-        result[year-1] += goal
+        goals[year-1] += goal
  
-    return result
+    return goals
 
   def adjust_incomes_by_goals(self, incomes, goals):
     '''Take in the list of incomes and list of goals, and begin to adjust the income numbers by "allocating" that income to goals in the same year. Perform a check as we go on to determine whether all goals are still achievable.
@@ -178,7 +220,7 @@ class Budget:
 
 def main():
   the_budget = Budget(sys.argv[1:])
-  print(the_budget.optimal_discretionary_spending)
+  print(the_budget)
 
 if __name__ == '__main__':
   main()

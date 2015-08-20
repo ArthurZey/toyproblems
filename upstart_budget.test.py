@@ -56,6 +56,7 @@ class BudgetTestCases(unittest.TestCase):
   def test_optimal_discretionary_spending(self):
     inputs_to_outputs = {
       ((10,4,4,9,9),(10,0,4,10)): [0,1,1,1,9],
+      ((85000,110000,120000,131000,133000),(0,90000,110000,0,100000)): [115000/3,115000/3,115000/3,82000,82000],
     }
     for (input_incomes_and_goals, output_optimal_discretionary_spending) in inputs_to_outputs.items():
       self.assertEqual(Budget.distribute_incomes(None, Budget.adjust_incomes_by_goals(None, input_incomes_and_goals[0], input_incomes_and_goals[1])), [round(float(x), 10) for x in output_optimal_discretionary_spending])
