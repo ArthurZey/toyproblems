@@ -106,6 +106,9 @@ def tower1(blocks):
 def tower2(blocks):
   return 0
 
+def tower3(blocks):
+  # http://stackoverflow.com/questions/24414700/amazon-water-collected-between-towers
+
 def main():
   parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
   parser.add_argument("blocks", help="a quotation-mark-enclosed, comma-separated list of how many blocks are in each column, from left to right;\n\nFor example: \"6,2,2,4,5\"")
