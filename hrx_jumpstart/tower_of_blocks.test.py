@@ -26,10 +26,15 @@ class TowerOfBlockTestCases(unittest.TestCase):
   def test_solve_via_finding_local_maxima(self):
     for (input_blocks, output_water) in self.inputs_to_outputs.items():
       self.assertEqual(tower1(input_blocks), output_water)
-
+  '''
   def test_solve_via_zeroing_out(self):
     for (input_blocks, output_water) in self.inputs_to_outputs.items():
       self.assertEqual(tower2(input_blocks), output_water)
+  '''
+
+  def test_solve_via_max_bounds_at_each_index(self):
+    for (input_blocks, output_water) in self.inputs_to_outputs.items():
+      self.assertEqual(tower3(input_blocks), output_water)
 
 if __name__ == '__main__':
   unittest.main()

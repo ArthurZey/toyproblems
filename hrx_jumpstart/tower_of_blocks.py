@@ -104,10 +104,70 @@ def tower1(blocks):
   return water
 
 def tower2(blocks):
-  return 0
+
+  water = 0
+  blocks = list(blocks)
+
+  while len(blocks) > 2:
+    print(blocks)
+
+    index = 0
+    any_fill = False
+    while index < len(blocks):
+      value = blocks[index]
+      if index != 0 and index != len(blocks) - 1 and value == 0:
+        print("  found a zero in the middle (index " + str(index) + "); stripping and adding water (now at " + str(water + 1) + ").")
+        blocks.pop(index)
+        water += 1
+        any_fill = True
+      elif (index == 0 or index == len(blocks) - 1) and value == 0:
+        print("  found a zero on an end (index " + str(index) + "); stripping")
+        blocks.pop(index)
+      else:
+        index += 1
+
+    print("  stripping complete. new blocks:")
+    print(blocks)
+
+    for (index, value) in enumerate(blocks):
+      blocks[index] = value - 1
+
+
+  return water
 
 def tower3(blocks):
   # http://stackoverflow.com/questions/24414700/amazon-water-collected-between-towers
+  water = 0
+  blocks = list(blocks)
+
+  print(blocks)
+
+  # Find the maximum on the left of each index
+  maximums_on_left = list(blocks)
+  maximum = 0
+  for index in range(0, len(blocks)):
+    maximums_on_left[index] = maximum
+    if blocks[index] > maximum:
+      maximum = blocks[index]
+  print("  maximums_on_left:")
+  print(maximums_on_left)
+
+  # Find the maximum of the right of each index
+  maximums_on_right = list(blocks)
+  maximum = 0
+  for index in range(len(blocks) - 1, -1, -1):
+    maximums_on_right[index] = maximum
+    if blocks[index] > maximum:
+      maximum = blocks[index]
+  print("  maximums_on_right:")
+  print(maximums_on_right)
+
+  # Go through and fill in for each index!
+  for index in range(0, len(blocks)):
+    if blocks[index] < maximums_on_left[index] and blocks[index] < maximums_on_right[index]:
+      water += min(maximums_on_left[index], maximums_on_right[index]) - blocks[index]
+
+  return water
 
 def main():
   parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
