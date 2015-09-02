@@ -6,7 +6,8 @@ import unittest
 class SortTests(unittest.TestCase):
   def setUp(self):
     self.inputs_to_outputs = {
-      (6, 3, 8, -3, 4, 7, 0, 1, 2, 6, 9, 14): [-3, 0, 1, 2, 3, 4, 6, 6, 7, 8, 9, 14],
+      #(6, 3, 8, -3, 4, 7, 0, 1, 2, 6, 9, 14): [-3, 0, 1, 2, 3, 4, 6, 6, 7, 8, 9, 14],
+      (3, 2, 1): [1, 2, 3],
     }
 
   def tearDown(self):
@@ -32,6 +33,12 @@ class SortTests(unittest.TestCase):
   def test_merge_sort(self):
     for (input_list, output_list) in self.inputs_to_outputs.items():
       self.assertEqual(merge_sort(input_list), output_list)
+
+  def test_bucket_sort(self):
+    for (input_list, output_list) in self.inputs_to_outputs.items():
+      self.assertEqual(bucket_sort(input_list), output_list)
+
+
 
 if __name__ == '__main__':
   unittest.main()

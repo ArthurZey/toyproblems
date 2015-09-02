@@ -4,6 +4,7 @@
 https://en.wikipedia.org/wiki/Insertion_sort
 https://en.wikipedia.org/wiki/Bubble_sort
 https://en.wikipedia.org/wiki/Merge_sort
+https://en.wikipedia.org/wiki/Bucket_sort
 '''
 
 import argparse
@@ -82,6 +83,35 @@ def merge_sort(input_list):
   elif right_index < len(right):
     for value in right[right_index:]:
       output_list.append(value)
+
+  return output_list
+
+def bucket_sort(input_list, n=7):
+  # we're using 7 buckets as a default, just for fun
+  
+  input_list = list(input_list)
+  output_list = list()
+
+  if len(input_list) <= 1:
+    return input_list
+  else:
+    minimum      = min(input_list)
+    list_range   = abs(max(input_list) - minimum)
+    buckets      = list()
+
+    # Make the buckets
+    for i in range(n):
+      buckets.append([minimum + (i * list_range/n), minimum + ((i+1) * list_range/n), list()])
+
+    # Put each value in the correct bucket
+    for value in input_list:
+      for i in range(n):
+        if value >= buckets[i][0] and value <= buckets[i][1]:
+          buckets[i][2].append(value)
+
+    # Concatinate the buckets
+    for i in range(n):
+      output_list.extend(bucket_sort(buckets[i][2]))
 
   return output_list
 
