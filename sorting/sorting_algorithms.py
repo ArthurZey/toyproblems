@@ -7,6 +7,7 @@ https://en.wikipedia.org/wiki/Bubble_sort
 
 import argparse
 import sys
+from math import floor
 
 def parse_args(args):
   '''Parse arguments into variables readily available to the class for further processing; provides built-in niceties for calling the script from the command line.'''
@@ -46,7 +47,6 @@ def bubble_sort(input_list):
 
   did_swap = True
   while did_swap == True:
-    print(output_list)
     did_swap = False
     for i in range(0, len(output_list) - 1):
       if output_list[i] > output_list[i+1]:
@@ -54,6 +54,33 @@ def bubble_sort(input_list):
         output_list[i] = output_list[i+1]
         output_list[i+1] = temp
         did_swap = True
+
+  return output_list
+
+def merge_sort(input_list):
+  input_list = list(input_list)
+  output_list = list()
+
+  left        = merge_sort(input_list[:floor(len(input_list)/2)]) if len(input_list[:floor(len(input_list)/2)]) > 1 else input_list[:floor(len(input_list)/2)]
+  right       = merge_sort(input_list[floor(len(input_list)/2):]) if len(input_list[floor(len(input_list)/2):]) > 1 else input_list[floor(len(input_list)/2):]
+  left_index  = 0
+  right_index = 0
+
+  while left_index < len(left) and right_index < len(right):
+    if left[left_index] > right[right_index]:
+      output_list.append(right[right_index])
+      right_index += 1
+    else:
+      output_list.append(left[left_index])
+      left_index += 1
+
+  # If we're out of the loop, one of the lists might still have elements left...
+  if left_index < len(left):
+    for value in left[left_index:]:
+      output_list.append(value)
+  if right_index < len(right):
+    for value in right[right_index:]:
+      output_list.append(value)
 
   return output_list
 
