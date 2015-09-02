@@ -88,7 +88,7 @@ def merge_sort(input_list):
 
 def bucket_sort(input_list, n=7):
   # we're using 7 buckets as a default, just for fun
-  
+
   input_list = list(input_list)
   output_list = list()
 
@@ -97,6 +97,9 @@ def bucket_sort(input_list, n=7):
   else:
     minimum      = min(input_list)
     list_range   = abs(max(input_list) - minimum)
+    if list_range == 0:
+      # all the values are the same
+      return input_list
     buckets      = list()
 
     # Make the buckets
@@ -108,12 +111,13 @@ def bucket_sort(input_list, n=7):
       for i in range(n):
         if value >= buckets[i][0] and value <= buckets[i][1]:
           buckets[i][2].append(value)
+          break
 
     # Concatinate the buckets
     for i in range(n):
       output_list.extend(bucket_sort(buckets[i][2]))
 
-  return output_list
+    return output_list
 
 def main():
   parsed_args = parse_args(sys.argv[1:])

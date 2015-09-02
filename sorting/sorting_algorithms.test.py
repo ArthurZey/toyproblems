@@ -6,7 +6,7 @@ import unittest
 class SortTests(unittest.TestCase):
   def setUp(self):
     self.inputs_to_outputs = {
-      #(6, 3, 8, -3, 4, 7, 0, 1, 2, 6, 9, 14): [-3, 0, 1, 2, 3, 4, 6, 6, 7, 8, 9, 14],
+      (6, 3, 8, -3, 4, 7, 0, 1, 2, 6, 9, 14): [-3, 0, 1, 2, 3, 4, 6, 6, 7, 8, 9, 14],
       (3, 2, 1): [1, 2, 3],
     }
 
@@ -36,7 +36,8 @@ class SortTests(unittest.TestCase):
 
   def test_bucket_sort(self):
     for (input_list, output_list) in self.inputs_to_outputs.items():
-      self.assertEqual(bucket_sort(input_list), output_list)
+      for i in range(2, 10):
+        self.assertEqual(bucket_sort(input_list, i), output_list)
 
 
 
