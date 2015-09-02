@@ -3,6 +3,7 @@
 '''
 https://en.wikipedia.org/wiki/Insertion_sort
 https://en.wikipedia.org/wiki/Bubble_sort
+https://en.wikipedia.org/wiki/Merge_sort
 '''
 
 import argparse
@@ -78,7 +79,7 @@ def merge_sort(input_list):
   if left_index < len(left):
     for value in left[left_index:]:
       output_list.append(value)
-  if right_index < len(right):
+  elif right_index < len(right):
     for value in right[right_index:]:
       output_list.append(value)
 
