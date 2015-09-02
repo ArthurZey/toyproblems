@@ -5,6 +5,7 @@ https://en.wikipedia.org/wiki/Insertion_sort
 https://en.wikipedia.org/wiki/Bubble_sort
 https://en.wikipedia.org/wiki/Merge_sort
 https://en.wikipedia.org/wiki/Bucket_sort
+https://en.wikipedia.org/wiki/Radix_sort#Least_significant_digit_radix_sorts
 '''
 
 import argparse
@@ -118,6 +119,13 @@ def bucket_sort(input_list, n=7):
       output_list.extend(bucket_sort(buckets[i][2]))
 
     return output_list
+
+def radix_lsd_sort(input_list):
+  input_list = list(input_list)
+  output_list = list()
+
+  return output_list
+
 
 def main():
   parsed_args = parse_args(sys.argv[1:])

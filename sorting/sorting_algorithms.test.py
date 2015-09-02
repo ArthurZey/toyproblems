@@ -39,6 +39,10 @@ class SortTests(unittest.TestCase):
       for i in range(2, 10):
         self.assertEqual(bucket_sort(input_list, i), output_list)
 
+  def test_radix_lsd_sort(self):
+    for (input_list, output_list) in self.inputs_to_outputs.items():
+      self.assertEqual(radix_lsd_sort(input_list), output_list)
+
 
 
 if __name__ == '__main__':
