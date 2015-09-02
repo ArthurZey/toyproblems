@@ -2,6 +2,7 @@
 
 '''
 https://en.wikipedia.org/wiki/Insertion_sort
+https://en.wikipedia.org/wiki/Bubble_sort
 '''
 
 import argparse
@@ -37,6 +38,22 @@ def insertion_sort(input_list):
         if j == 0 or (value >= output_list[j-1] and value <= output_list[j]):
           output_list[j] = value
           break
+
+  return output_list
+
+def bubble_sort(input_list):
+  output_list = list(input_list)
+
+  did_swap = True
+  while did_swap == True:
+    print(output_list)
+    did_swap = False
+    for i in range(0, len(output_list) - 1):
+      if output_list[i] > output_list[i+1]:
+        temp = output_list[i]
+        output_list[i] = output_list[i+1]
+        output_list[i+1] = temp
+        did_swap = True
 
   return output_list
 
