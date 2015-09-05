@@ -127,7 +127,7 @@ def radix_lsd_sort(input_list):
 
   maximum_length = len(str(max([abs(x) for x in input_list]))) 
   inputs_as_reversed_strings = [str(x)[::-1] for x in input_list]
-  buckets = [list(), list(), list(), list(), list(), list(), list(), list(), list(), list()]
+  buckets = [list() for _ in range(10)]
 
   for place in range(maximum_length):
     for value in inputs_as_reversed_strings:
@@ -137,7 +137,7 @@ def radix_lsd_sort(input_list):
         buckets[int(value[place])].append(value)
 
     inputs_as_reversed_strings = [item for sublist in buckets for item in sublist]
-    buckets = [list(), list(), list(), list(), list(), list(), list(), list(), list(), list()]
+    buckets = [list() for _ in range(10)]
 
   # we need to finally do one more pass by negatives (and then just reverse the negatives):
   negatives = list()
