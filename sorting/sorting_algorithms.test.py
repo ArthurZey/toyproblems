@@ -44,6 +44,9 @@ class SortTests(unittest.TestCase):
     for (input_list, output_list) in self.inputs_to_outputs.items():
       self.assertEqual(radix_lsd_sort(input_list), output_list)
 
+  def test_quicksort(self):
+    for (input_list, output_list) in self.inputs_to_outputs.items():
+      self.assertEqual(quicksort(input_list), output_list)
 
 
 if __name__ == '__main__':

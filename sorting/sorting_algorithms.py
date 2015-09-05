@@ -6,6 +6,7 @@ https://en.wikipedia.org/wiki/Bubble_sort
 https://en.wikipedia.org/wiki/Merge_sort
 https://en.wikipedia.org/wiki/Bucket_sort
 https://en.wikipedia.org/wiki/Radix_sort#Least_significant_digit_radix_sorts
+https://en.wikipedia.org/wiki/Quicksort
 '''
 
 import argparse
@@ -124,7 +125,7 @@ def radix_lsd_sort(input_list):
   input_list = list(input_list)
   output_list = list()
 
-  maximum_length = len(str(max([abs(x) for x in input_list])))
+  maximum_length = len(str(max([abs(x) for x in input_list]))) 
   inputs_as_reversed_strings = [str(x)[::-1] for x in input_list]
   buckets = [list(), list(), list(), list(), list(), list(), list(), list(), list(), list()]
 
@@ -151,6 +152,12 @@ def radix_lsd_sort(input_list):
   output_list.extend(positives)
 
   return [int(x[::-1]) for x in output_list]
+
+def quicksort(input_list):
+  input_list = list(input_list)
+  output_list = list()
+
+  return output_list
 
 def main():
   parsed_args = parse_args(sys.argv[1:])
