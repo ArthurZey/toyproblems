@@ -15,10 +15,12 @@ client = Client(api_key_file=API_KEY_FILE)
 
 application = client.applications.search({'name': 'My Application'})[0]
 
-account = application.accounts.create({
-    'given_name': 'Joe',
-    'surname': 'Stormtrooper',
-    'email': 'tk421@galacticempire.co',
-    'password': 'Changeme123!',
-})
-print('User ' + account.full_name + ' created.')
+from stormpath.error import Error as StormpathError
+
+try:
+    result = application.authenticate_account('tk421@galacticempire.co', 'Changeme123!')
+    account = result.account
+
+    print('User ' + result.account.full_name + ' logged in.')
+except StormpathError, e:
+    print('Could not log in. Error: ' + e.user_message)
