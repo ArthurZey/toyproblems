@@ -1,1 +1,4 @@
 DirectoryIndex index.py
+
+RewriteEngine On
+RewriteRule    ^login/?$    login.py    [NC,L]
