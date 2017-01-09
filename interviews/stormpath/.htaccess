@@ -1,0 +1,5 @@
+DirectoryIndex index.py
+
+RewriteEngine On
+RewriteRule    ^login/?$    login.py    [NC,L]
+RewriteRule    ^callback/?$ callback.py [NC,L]
