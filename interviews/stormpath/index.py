@@ -15,4 +15,10 @@ client = Client(api_key_file=API_KEY_FILE)
 
 application = client.applications.search({'name': 'My Application'})[0]
 
-print "Hello!"
+account = application.accounts.create({
+    'given_name': 'Joe',
+    'surname': 'Stormtrooper',
+    'email': 'tk421@galacticempire.co',
+    'password': 'Changeme123!',
+})
+print('User ' + account.full_name + ' created.')
