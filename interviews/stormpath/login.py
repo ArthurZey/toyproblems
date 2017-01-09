@@ -14,7 +14,7 @@ client = Client(api_key_file=API_KEY_FILE)
 
 application = client.applications.search({'name': 'My Application'})[0]
 
-url = application.build_id_site_redirect_url('https://www.deltawerx.com/toyproblems/interviews/stormpath/callback')
+url = application.build_id_site_redirect_url('http://www.deltawerx.com/toyproblems/interviews/stormpath/callback')
 
 print "Location: " + url
 print "Content-type: text/html\n\n"
