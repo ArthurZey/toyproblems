@@ -19,7 +19,9 @@ url = environ['SCRIPT_URI'] + "?" + environ['QUERY_STRING']
 
 result = application.handle_stormpath_callback(url)
 
-print "Location: http://www.deltawerx.com/toyproblems/interviews/stormpath/"
+# print "Location: http://www.deltawerx.com/toyproblems/interviews/stormpath/"
 print "Content-type: text/html\n\n"
 
-print "You are being redirected to http://www.deltawerx.com/toyproblems/interviews/stormpath/"
+
+print result.account
+# print "You are being redirected to http://www.deltawerx.com/toyproblems/interviews/stormpath/"
