@@ -23,5 +23,5 @@ result = application.handle_stormpath_callback(url)
 print "Content-type: text/html\n\n"
 
 
-print dir(result.account.full_name)
+print "Congratulations! " + result.account.full_name + " has been logged in successfully!"
 # print "You are being redirected to http://www.deltawerx.com/toyproblems/interviews/stormpath/"
