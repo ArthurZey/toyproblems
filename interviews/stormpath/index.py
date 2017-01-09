@@ -13,4 +13,6 @@ API_KEY_FILE = join(expanduser('~'), '.stormpath', 'apiKey.properties')
 
 client = Client(api_key_file=API_KEY_FILE)
 
+application = client.applications.search({'name': 'My Application'})[0]
+
 print "Hello!"
