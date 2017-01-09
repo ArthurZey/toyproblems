@@ -1,6 +1,7 @@
 #!/home/arthurzey/deltawerx.com/env/bin/python
 
 from os.path import expanduser, join
+import os
 
 from stormpath.client import Client
 
@@ -14,9 +15,11 @@ client = Client(api_key_file=API_KEY_FILE)
 
 application = client.applications.search({'name': 'My Application'})[0]
 
-result = application.handle_stormpath_callback(url)
+# result = application.handle_stormpath_callback(url)
 
-print "Location: http://www.deltawerx.com/toyproblems/interviews/stormpath/"
+# print "Location: http://www.deltawerx.com/toyproblems/interviews/stormpath/"
 print "Content-type: text/html\n\n"
 
-print "You are being redirected to http://www.deltawerx.com/toyproblems/interviews/stormpath/"
+# print "You are being redirected to http://www.deltawerx.com/toyproblems/interviews/stormpath/"
+
+print os.environ
