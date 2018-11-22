@@ -26,7 +26,7 @@ class KaprekarTestCases(unittest.TestCase):
       (6174,10):[6174]
     }
     for (input, output) in inputs_to_outputs.items():
-      self.assertEqual(chain_generator(input[0], input[1]), output)
+      self.assertEqual(chain_generator(input[0], input[1], 1000), output)
 
   def test_all_digits_the_same(self):
     inputs_to_outputs = {
