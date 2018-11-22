@@ -50,7 +50,7 @@ def chain_generator(number, base, max_length):
   return []
 
 def first_number(digits):
-  return 0
+  return int("".join(["1"] + ["0" for x in range(digits - 1)]))
 
 def main():
   parsed_args = parse_args(sys.argv[1:])
@@ -66,6 +66,7 @@ def main():
 
   print(parsed_args.digits)
   print(parsed_args.base)
+
 
 if __name__ == '__main__':
   main()
