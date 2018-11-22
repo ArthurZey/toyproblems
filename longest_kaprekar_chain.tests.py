@@ -17,5 +17,14 @@ class KaprekarTestCases(unittest.TestCase):
     for (input, output) in inputs_to_outputs.items():
       self.assertEqual(reverse_number(input), output)
 
+  def test_chain_generator(self):
+    inputs_to_outputs = {
+      (947,10):[947,495],
+      (6174,10):[6174,3087,8352,6174],
+      (111,10):[]
+    }
+    for (input, output) in inputs_to_outputs.items():
+      self.assertEqual(chain_generator(input[0], input[1]), output)
+
 if __name__ == '__main__':
   unittest.main()

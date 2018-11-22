@@ -19,6 +19,10 @@ def parse_args(args):
 def reverse_number(number):
   return(int(str(number)[::-1]))
 
+def chain_generator(number, base):
+  chain = [number]
+
+  return chain
 
 def main():
   parsed_args = parse_args(sys.argv[1:])
