@@ -49,8 +49,20 @@ def chain_generator(number, base, max_length):
   # At this point, the for loop completed, so we didn't find a Kaprekar Constant. To indicate the error, we retun an empty chain.
   return []
 
+def first_number(digits):
+  return 0
+
 def main():
   parsed_args = parse_args(sys.argv[1:])
+
+  base = int(parsed_args.base)
+  digits = int(parsed_args.digits)
+  max_length = int(parsed_args.max_length)
+
+  # Might want to clean this up with validation on the arguments at call time.
+  if base >= 2 and digits >= 3:
+    pass
+
 
   print(parsed_args.digits)
   print(parsed_args.base)

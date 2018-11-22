@@ -46,5 +46,14 @@ class KaprekarTestCases(unittest.TestCase):
     for (input, output) in inputs_to_outputs.items():
       self.assertEqual(all_digits_the_same(input), output)
 
+  def test_first_number(self):
+    inputs_to_outputs = {
+      3:100,
+      4:1000,
+      5:10000
+    }
+    for (input, output) in inputs_to_outputs.items():
+      self.assertEqual(first_number(input), output)
+
 if __name__ == '__main__':
   unittest.main()
