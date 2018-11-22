@@ -52,6 +52,7 @@ def chain_generator(number, base, max_length):
 def first_number(digits):
   return int("".join(["1"] + ["0" for x in range(digits - 1)]))
 
+
 def main():
   parsed_args = parse_args(sys.argv[1:])
 
@@ -61,7 +62,8 @@ def main():
 
   # Might want to clean this up with validation on the arguments at call time.
   if base >= 2 and digits >= 3:
-    pass
+    for number in range(first_number(digits), int("".join([str(base - 1) for x in range(digits)]), base)):
+      pass
 
 
   print(parsed_args.digits)
