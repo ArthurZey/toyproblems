@@ -23,10 +23,24 @@ class KaprekarTestCases(unittest.TestCase):
       ("6174",10):["6174","3087","8352","6174"],
       ("111",10):[],
       ("495",10):["495"],
-      ("6174",10):["6174"]
+      ("6174",10):["6174"],
+      ("221",10):["221","099","891","792","693","594","495"],
+      ("211",10):["211","099","891","792","693","594","495"]
     }
     for (input, output) in inputs_to_outputs.items():
       self.assertEqual(chain_generator(input[0], input[1], 1000), output)
+
+    known_constants = {
+      (3,10,7):"495",
+      (4,10,8):"6174"
+    }
+
+    for (input, output) in known_constants.items():
+      for i in range(int(first_number(input[0])), int("".join([str(input[1] - 1) for x in range(input[0])]), input[1])):
+        number = toStr(i, input[1])
+        if not all_digits_the_same(number):
+          self.assertEqual(chain_generator(number, input[1], input[2])[-1], output)
+
 
   def test_all_digits_the_same(self):
     inputs_to_outputs = {
@@ -48,9 +62,9 @@ class KaprekarTestCases(unittest.TestCase):
 
   def test_first_number(self):
     inputs_to_outputs = {
-      3:100,
-      4:1000,
-      5:10000
+      3:"100",
+      4:"1000",
+      5:"10000"
     }
     for (input, output) in inputs_to_outputs.items():
       self.assertEqual(first_number(input), output)

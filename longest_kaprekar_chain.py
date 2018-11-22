@@ -27,6 +27,13 @@ def all_digits_the_same(number):
 
   return True
 
+def toStr(n,base):
+   convertString = "0123456789ABCDEF"
+   if n < base:
+      return convertString[n]
+   else:
+      return toStr(n//base,base) + convertString[n%base]
+
 def chain_generator(number, base, max_length):
   # If all digits of the number are the same, we need to return an empty chain.
   if all_digits_the_same(number):
@@ -38,7 +45,7 @@ def chain_generator(number, base, max_length):
   for i in range(max_length):
     number_ascending = "".join(sorted(str(chain[-1])))
     number_descending = "".join(sorted(str(chain[-1]), reverse=True))
-    new_number = str(abs(int(number_ascending)-int(number_descending)))
+    new_number = toStr(abs(int(number_ascending, base)-int(number_descending, base)),base).zfill(len(number))
     if new_number != chain[-1]:
       chain.append(str(new_number))
     else:
@@ -48,7 +55,7 @@ def chain_generator(number, base, max_length):
   return []
 
 def first_number(digits):
-  return int("".join(["1"] + ["0" for x in range(digits - 1)]))
+  return "".join(["1"] + ["0" for x in range(digits - 1)])
 
 
 def main():
@@ -60,8 +67,30 @@ def main():
 
   # Might want to clean this up with validation on the arguments at call time. Also think about how to extend to bases past 10.
   if base >= 2 and base <= 10 and digits >= 3:
-    for number in range(first_number(digits), int("".join([str(base - 1) for x in range(digits)]), base)):
-      pass
+    kaprekar_constants = {}
+    kaprekar_divergents = {}
+    for i in range(int(first_number(digits), base), int("".join([str(base - 1) for x in range(digits)]), base)):
+      number = toStr(i, base)
+      chain = chain_generator(number, base, max_length)
+      if not all_digits_the_same(number):
+        if chain != []:
+          if chain[-1] not in kaprekar_constants:
+            kaprekar_constants[chain[-1]] = []
+          kaprekar_constants[chain[-1]].append({number:len(chain)})
+        else:
+          kaprekar_divergents[number] = True
+
+      # print(number + ": " + str(chain))
+      '''
+      print("For " + digits + "-digit numbers in base " + base + ",")
+      if no_terminus:
+        print(" no Kaprekar Constant could be found within " + max_length + " iterations.")
+      else:
+        print(" the longest Kaprekar Chain found was")
+      '''
+
+    for (kaprekar_constant, constant_properties) in kaprekar_constants.items():
+      print(kaprekar_constant)
 
 
   print(parsed_args.digits)
