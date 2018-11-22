@@ -18,11 +18,9 @@ def parse_args(args):
   return parser.parse_args(args)
 
 def reverse_number(number):
-  return(int(str(number)[::-1]))
+  return number[::-1]
 
 def all_digits_the_same(number):
-  number = str(number)
-
   for i in range(1, len(number)):
     if number[i] != number[i-1]:
       return False
@@ -40,9 +38,9 @@ def chain_generator(number, base, max_length):
   for i in range(max_length):
     number_ascending = "".join(sorted(str(chain[-1])))
     number_descending = "".join(sorted(str(chain[-1]), reverse=True))
-    new_number = abs(int(number_ascending)-int(number_descending))
+    new_number = str(abs(int(number_ascending)-int(number_descending)))
     if new_number != chain[-1]:
-      chain.append(new_number)
+      chain.append(str(new_number))
     else:
       return chain
 
@@ -60,8 +58,8 @@ def main():
   digits = int(parsed_args.digits)
   max_length = int(parsed_args.max_length)
 
-  # Might want to clean this up with validation on the arguments at call time.
-  if base >= 2 and digits >= 3:
+  # Might want to clean this up with validation on the arguments at call time. Also think about how to extend to bases past 10.
+  if base >= 2 and base <= 10 and digits >= 3:
     for number in range(first_number(digits), int("".join([str(base - 1) for x in range(digits)]), base)):
       pass
 
