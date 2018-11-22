@@ -19,8 +19,18 @@ def parse_args(args):
 def reverse_number(number):
   return(int(str(number)[::-1]))
 
+def all_digits_the_same(number):
+  number = str(number)
+
+  for i in range(1, len(number)):
+    if number[i] != number[i-1]:
+      return False
+
+  return True
+
 def chain_generator(number, base):
-  chain = [number]
+
+  # If all digits of the number are the same, we need to return an empty chain.
 
   return chain
 

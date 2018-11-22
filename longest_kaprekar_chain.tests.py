@@ -26,5 +26,23 @@ class KaprekarTestCases(unittest.TestCase):
     for (input, output) in inputs_to_outputs.items():
       self.assertEqual(chain_generator(input[0], input[1]), output)
 
+  def test_all_digits_the_same(self):
+    inputs_to_outputs = {
+      111:True,
+      222:True,
+      0:True,
+      1:True,
+      5555:True,
+      33:True,
+      72:False,
+      7773:False,
+      111115:False,
+      12:False,
+      224:False,
+      3962:False
+    }
+    for (input, output) in inputs_to_outputs.items():
+      self.assertEqual(all_digits_the_same(input), output)
+
 if __name__ == '__main__':
   unittest.main()
