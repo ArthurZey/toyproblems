@@ -57,6 +57,20 @@ def chain_generator(number, base, max_length):
 def first_number(digits):
   return "".join(["1"] + ["0" for x in range(digits - 1)])
 
+def results(digits, base, max_length):
+  # Might want to clean this up with validation on the arguments at call time. Also think about how to extend to bases past 10.
+  if base >= 2 and base <= 10 and digits >= 3:
+    for i in range(int(str(pow(10,digits-1)), base), int("".join([str(base-1) for x in range(digits)]), base)):
+      number = toStr(i, base)
+      chain = chain_generator(number, base, max_length)
+      if not all_digits_the_same(number):
+        if chain != []:
+          yield (number, {"constant": chain[-1], "length": len(chain)})
+        else:
+          yield (number, {"constant": None})
+
+
+
 
 def main():
   parsed_args = parse_args(sys.argv[1:])
@@ -65,36 +79,27 @@ def main():
   digits = int(parsed_args.digits)
   max_length = int(parsed_args.max_length)
 
-  # Might want to clean this up with validation on the arguments at call time. Also think about how to extend to bases past 10.
-  if base >= 2 and base <= 10 and digits >= 3:
-    kaprekar_constants = {}
-    kaprekar_divergents = {}
-    for i in range(int(first_number(digits), base), int("".join([str(base - 1) for x in range(digits)]), base)):
-      number = toStr(i, base)
-      chain = chain_generator(number, base, max_length)
-      if not all_digits_the_same(number):
-        if chain != []:
-          if chain[-1] not in kaprekar_constants:
-            kaprekar_constants[chain[-1]] = []
-          kaprekar_constants[chain[-1]].append({number:len(chain)})
-        else:
-          kaprekar_divergents[number] = True
-
-      # print(number + ": " + str(chain))
-      '''
-      print("For " + digits + "-digit numbers in base " + base + ",")
-      if no_terminus:
-        print(" no Kaprekar Constant could be found within " + max_length + " iterations.")
+  kaprekar_constants = {}
+  kaprekar_divergents = {}
+  for (number, properties) in results(digits, base, max_length):
+    if properties["constant"] is not None:
+      if properties["constant"] in kaprekar_constants:
+        kaprekar_constants[properties["constant"]].add(properties["length"])
       else:
-        print(" the longest Kaprekar Chain found was")
-      '''
+        kaprekar_constants[properties["constant"]] = {properties["length"]}
+    else:
+      kaprekar_divergents.add(number)
 
-    for (kaprekar_constant, constant_properties) in kaprekar_constants.items():
-      print(kaprekar_constant)
+  if len(kaprekar_constants) > 0:
+    print("For " + str(digits) + "-digit numbers in base " + str(base) + ", the following Kaprekar Constants were found (with corresponding longest chains):")
+    for kaprekar_constant in kaprekar_constants:
+      print(str(kaprekar_constant) + " (max chain length: " + str(max(kaprekar_constants[kaprekar_constant])) + ")")
+    if len(kaprekar_divergents) > 0:
+      print("The following numbers did not converge: " + str(kaprekar_divergents))
 
 
-  print(parsed_args.digits)
-  print(parsed_args.base)
+  # print(parsed_args.digits)
+  # print(parsed_args.base)
 
 
 if __name__ == '__main__':
