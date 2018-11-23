@@ -80,7 +80,7 @@ def main():
   max_length = int(parsed_args.max_length)
 
   kaprekar_constants = {}
-  kaprekar_divergents = {}
+  kaprekar_divergents = set()
   for (number, properties) in results(digits, base, max_length):
     if properties["constant"] is not None:
       if properties["constant"] in kaprekar_constants:
@@ -95,7 +95,9 @@ def main():
     for kaprekar_constant in kaprekar_constants:
       print(str(kaprekar_constant) + " (max chain length: " + str(max(kaprekar_constants[kaprekar_constant])) + ")")
     if len(kaprekar_divergents) > 0:
-      print("The following numbers did not converge: " + str(kaprekar_divergents))
+      print("The following numbers did not converge within chains of length " + str(max_length) + ": " + str(kaprekar_divergents))
+  else:
+    print("For " + str(digits) + "-digit numbers in base " + str(base) + ", no Kaprekar Constants were found within chains of length " + str(max_length) + ".")
 
 
   # print(parsed_args.digits)
