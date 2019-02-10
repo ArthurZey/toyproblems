@@ -2,6 +2,12 @@
 
 '''
 Given a base and a number of digits, find the longest Kaprekar Chain (number of iterations to get to the Kaprekar Constant for that base and number of digits).
+
+Additional Resources:
+https://www.math.hmc.edu/funfacts/ffiles/10002.5-8.shtml
+http://kaprekar.sourceforge.net/output/sample.php
+http://mathworld.wolfram.com/KaprekarRoutine.html
+https://plus.maths.org/content/mysterious-number-6174
 '''
 
 import argparse
@@ -46,6 +52,7 @@ def chain_generator(number, base, max_length):
     number_ascending = "".join(sorted(str(chain[-1])))
     number_descending = "".join(sorted(str(chain[-1]), reverse=True))
     new_number = toStr(abs(int(number_ascending, base)-int(number_descending, base)),base).zfill(len(number))
+    print(number_ascending + " - " + number_descending + " = " + new_number)
     if new_number != chain[-1]:
       chain.append(str(new_number))
     else:
